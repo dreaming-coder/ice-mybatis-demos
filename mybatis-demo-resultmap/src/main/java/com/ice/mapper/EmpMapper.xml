@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ice.mapper.EmpMapper">
+
+    <select id="getEmpsByDid" resultType="Emp">
+        select * from t_emp where did = #{did}
+    </select>
+
+    <!--  在配置文件中配置mapUnderscoreToCamelCase为true，可以自动对应不同风格变量  -->
+    <select id="getAllEmpBySetting" resultType="Emp">
+        select * from t_emp
+    </select>
+    <resultMap id="empResult" type="Emp">
+        <id property="eid" column="eid" />
+        <result property="empName" column="emp_name" />
+        <result property="age" column="age" />
+        <result property="sex" column="sex" />
+        <result property="email" column="email" />
+    </resultMap>
+    <select id="getAllEmp" resultMap="empResult">
+        select * from t_emp
+    </select>
+
+
+    <!--  这种方式感觉不靠谱  -->
+    <resultMap id="empAndDeptResult1" type="Emp">
+        <id property="eid" column="eid"/>
+        <result property="empName" column="emp_name" />
+        <result property="age" column="age" />
+        <result property="sex" column="sex" />
+        <result property="email" column="email" />
+        <result property="dept.did" column="did" />
+        <result property="dept.deptName" column="dept_name" />
+    </resultMap>
+    <select id="getEmpById1" resultMap="empAndDeptResult1">
+        select * from t_emp left join t_dept on t_emp.did = t_dept.did where eid=#{eid}
+    </select>
+
+
+    <resultMap id="empAndDeptResult2" type="Emp">
+        <id property="eid" column="eid"/>
+        <result property="empName" column="emp_name" />
+        <result property="age" column="age" />
+        <result property="sex" column="sex" />
+        <result property="email" column="email" />
+        <association property="dept" javaType="Dept">
+            <id property="did" column="did"/>
+            <result property="deptName" column="dept_name"/>
+        </association>
+    </resultMap>
+    <select id="getEmpById2" resultMap="empAndDeptResult2">
+        select * from t_emp left join t_dept on t_emp.did = t_dept.did where eid=#{eid}
+    </select>
+
+
+    <resultMap id="empAndDeptResult3" type="Emp">
+        <id property="eid" column="eid"/>
+        <result property="empName" column="emp_name" />
+        <result property="age" column="age" />
+        <result property="sex" column="sex" />
+        <result property="email" column="email" />
+        <!-- 分步查询根据部门id查-->
+        <!-- 当开启了全局延迟加载后，可根据fetchType手动开启/关闭延迟加载 -->
+        <association property="dept" select="com.ice.mapper.DeptMapper.getDeptByDid" column="did" fetchType="lazy"/>
+    </resultMap>
+    <select id="getEmpById3" resultMap="empAndDeptResult3">
+        select * from t_emp where eid = #{eid}
+    </select>
+
+
+</mapper>
