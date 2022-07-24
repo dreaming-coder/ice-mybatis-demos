@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>mybatis-demo-helloworld</module>
+        <module>mybatis-demo-resultmap</module>
     </modules>
 
     <properties>
@@ -37,7 +38,30 @@
             <version>5.8.2</version>
             <scope>test</scope>
         </dependency>
-
-
     </dependencies>
+    <!--在父工程或者每个子模块的pom.xml配置文件中添加以下配置 。-->
+    <build>
+        <!--说明，在进行模块化开发打jar包时，maven会将非java文件过滤掉，
+            xml,properties配置文件等，但是这些文件又是必需的，
+            使用此配置可以在打包时将不会过滤这些必需的配置文件。
+         -->
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+    </build>
 </project>
