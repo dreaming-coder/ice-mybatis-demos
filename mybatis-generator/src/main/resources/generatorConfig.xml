@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+
+    <!-- 引入配置文件 -->
+    <properties resource="db.properties"/>
+
+    <!-- 一个数据库一个context, context的子元素必须按照它给出的顺序
+        1. property (0..N)
+        2. plugin (0..N)
+        3. commentGenerator (0 or 1)
+        4. jdbcConnection (需要connectionFactory 或 jdbcConnection)
+        5. javaTypeResolver (0 or 1)
+        6. javaModelGenerator (至少1个)
+        7. javaModelGenerator (至少1个)
+        8. javaClientGenerator (0 or 1)
+        9. table (1..N)
+    -->
+    <!--
+      id：随便填，保证多个 context id 不重复就行
+      defaultModelType：可以不填，默认值 conditional，flat表示一张表对应一个po
+      targetRuntime：可以不填，默认值 MyBatis3，常用的还有 MyBatis3Simple，这个配置会影响生成的 dao 和 mapper.xml的内容
+      -->
+    <context id="DB2Tables" defaultModelType="flat" targetRuntime="MyBatis3Simple">
+        <commentGenerator>
+            <!-- 不希望生成的注释中包含时间戳 -->
+            <property name="suppressDate" value="true"/>
+            <!-- 添加 db 表中字段的注释 -->
+            <property name="addRemarkComments" value="true"/>
+            <!-- 是否不生成注释 -->
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+        <!-- 数据库的连接信息 -->
+        <jdbcConnection driverClass="${mysql.driver}"
+                        connectionURL="${mysql.url}"
+                        userId="${mysql.username}"
+                        password="${mysql.password}">
+        </jdbcConnection>
+        <javaTypeResolver>
+            <!--是否使用 bigDecimal，默认false。
+                false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer
+                true，把JDBC DECIMAL 和 NUMERIC 类型解析为java.math.BigDecimal-->
+            <property name="forceBigDecimals" value="true"/>
+            <!--默认false
+                false，将所有 JDBC 的时间类型解析为 java.util.Date
+                true，将 JDBC 的时间类型按如下规则解析
+                    DATE	                -> java.time.LocalDate
+                    TIME	                -> java.time.LocalTime
+                    TIMESTAMP                   -> java.time.LocalDateTime
+                    TIME_WITH_TIMEZONE  	-> java.time.OffsetTime
+                    TIMESTAMP_WITH_TIMEZONE	-> java.time.OffsetDateTime
+                -->
+            <property name="useJSR310Types" value="true"/>
+        </javaTypeResolver>
+        <!-- javaBean的生成策略-->
+        <javaModelGenerator targetPackage="com.ice.entity" targetProject="src/main/java">
+            <!-- 是否让schema作为包的后缀，默认为false -->
+            <property name="enableSubPackages" value="true"/>
+            <!-- 是否针对string类型的字段在set方法中进行修剪，默认false -->
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+        <!-- SQL映射文件的生成策略 -->
+        <sqlMapGenerator targetPackage="com.ice.mapper" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+        <!-- Mapper接口的生成策略 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.ice.mapper" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+        <!-- 逆向分析的表 -->
+        <!-- tableName设置为*号，可以对应所有表，此时不写domainObjectName -->
+        <!-- domainObjectName属性指定生成出来的实体类的类名 -->
+        <table tableName="t_emp" domainObjectName="Emp"/>
+        <table tableName="t_dept" domainObjectName="Dept"/>
+    </context>
+</generatorConfiguration>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ice.mapper.DeptMapper">
+  <resultMap id="BaseResultMap" type="com.ice.entity.Dept">
+    <id column="did" jdbcType="INTEGER" property="did" />
+    <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_dept
+    where did = #{did,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ice.entity.Dept">
+    insert into t_dept (did, dept_name)
+    values (#{did,jdbcType=INTEGER}, #{deptName,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.ice.entity.Dept">
+    update t_dept
+    set dept_name = #{deptName,jdbcType=VARCHAR}
+    where did = #{did,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select did, dept_name
+    from t_dept
+    where did = #{did,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select did, dept_name
+    from t_dept
+  </select>
+</mapper>
