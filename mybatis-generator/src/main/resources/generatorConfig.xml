@@ -23,7 +23,7 @@
       defaultModelType：可以不填，默认值 conditional，flat表示一张表对应一个po
       targetRuntime：可以不填，默认值 MyBatis3，常用的还有 MyBatis3Simple，这个配置会影响生成的 dao 和 mapper.xml的内容
       -->
-    <context id="DB2Tables" defaultModelType="flat" targetRuntime="MyBatis3Simple">
+    <context id="DB2Tables" defaultModelType="flat" targetRuntime="MyBatis3">
         <commentGenerator>
             <!-- 不希望生成的注释中包含时间戳 -->
             <property name="suppressDate" value="true"/>

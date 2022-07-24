@@ -13,6 +13,18 @@ public class Emp {
 
     private Integer did;
 
+    public Emp(Integer eid, String empName, Integer age, String sex, String email, Integer did) {
+        this.eid = eid;
+        this.empName = empName;
+        this.age = age;
+        this.sex = sex;
+        this.email = email;
+        this.did = did;
+    }
+
+    public Emp() {
+    }
+
     public Integer getEid() {
         return eid;
     }
@@ -59,5 +71,17 @@ public class Emp {
 
     public void setDid(Integer did) {
         this.did = did;
+    }
+
+    @Override
+    public String toString() {
+        return "Emp{" +
+                "eid=" + eid +
+                ", empName='" + empName + '\'' +
+                ", age=" + age +
+                ", sex='" + sex + '\'' +
+                ", email='" + email + '\'' +
+                ", did=" + did +
+                '}';
     }
 }
